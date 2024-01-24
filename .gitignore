@@ -1,0 +1,8 @@
+# ignore all json files
+*.json
+
+# ignore the sqlite database
+*.db
+
+# ignore pycache
+__pycache__/
