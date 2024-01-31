@@ -1,7 +1,9 @@
 """
 This file contains generic functions that are used by the server_roles cog.
 """
-from json_helpers.read_json import readJson
+
+import os
+import json
 
 
 def checkIfRoleExists(role_name, ctx) -> bool:
@@ -21,16 +23,35 @@ def getRoleCategory(category) -> dict | None:
     """
     This function returns the role category from the provided category.
     """
-    main_roles = readJson("roles/discord/main")
-    optional_roles = readJson("roles/discord/optional")
 
-    if category in main_roles:
-        return main_roles[category]
+    role_directories = getAllRoles()
 
-    if category in optional_roles:
-        return optional_roles[category]
+    for role_directory in role_directories:
+        for _, _, role_file in os.walk(role_directory):
+            for role in role_file:
+                if role == f"{category}.json":
+                    with open(
+                        f"{role_directory}/{role}", encoding="utf-8"
+                    ) as role_file:
+                        return json.load(role_file)
 
     return None
+
+
+def getAllRoles() -> list:
+    """
+    This function returns all the roles.
+    """
+
+    # walk the /roles/discord directory and get all folders
+    # and append the directory name to the list
+    role_categories = []
+
+    for found_dirs, _, _ in os.walk("roles/discord"):
+        if found_dirs != "roles/discord":
+            role_categories.append(found_dirs)
+
+    return role_categories
 
 
 async def manipulateRoles(ctx, category, action):

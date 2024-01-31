@@ -3,7 +3,7 @@
 """
 
 from discord.ext import commands
-from bot.server_roles.generic import manipulateRoles
+from bot.roles.generic import manipulateRoles
 
 
 @commands.command()

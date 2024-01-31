@@ -4,8 +4,8 @@ where you can react to the message to get the role.
 """
 from string import ascii_lowercase as letters
 from discord.ext import commands
-from discord import Embed, Color, Message
-from bot.server_roles.generic import getRoleCategory
+from discord import Embed, Color
+from bot.roles.generic import getRoleCategory
 
 
 async def postEmojiEmbed(ctx, category_result, roles, channel_id, emoji_type):
