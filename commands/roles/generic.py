@@ -4,6 +4,7 @@ This file contains generic functions that are used by the server_roles cog.
 
 import os
 import json
+from typing import Any
 
 
 def checkIfRoleExists(role_name, ctx) -> bool:
@@ -19,7 +20,32 @@ def checkIfRoleExists(role_name, ctx) -> bool:
     return False
 
 
-def getRoleCategory(category) -> dict | None:
+def getRoleGroup(group: str) -> dict | None:
+    """
+    This function returns the role category from the provided category.
+    """
+
+    role_directories = getAllRoles()
+
+    list_of_roles = dict[str, dict[Any, Any]]()
+
+    if group not in role_directories:
+        return None
+
+    for role_directory in role_directories:
+        for _, _, role_file in os.walk(role_directory):
+            for role in role_file:
+                if role.endswith(".json"):
+                    with open(
+                        f"{role_directory}/{role}", encoding="utf-8"
+                    ) as role_file:
+                        role_data = json.load(role_file)
+                        list_of_roles[role] = role_data
+
+    return list_of_roles
+
+
+def getRoleCategory(category: str) -> dict | None:
     """
     This function returns the role category from the provided category.
     """
@@ -72,8 +98,8 @@ async def manipulateRoles(ctx, category, action):
                     await ctx.send(f"Added role {role_name} to the server!")
                 elif action == "update":
                     action_name = "Updated"
-                    # TODO: Update role
-                    await ctx.send(f"Updated role {role_name}!")
+
+                    await ctx.send("Not Implemented!")
                 elif list == "list":
                     await ctx.send(role_name)
                 else:

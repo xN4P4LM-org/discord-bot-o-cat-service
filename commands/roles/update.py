@@ -3,7 +3,7 @@ Update the server roles.
 """
 
 from discord.ext import commands
-from bot.roles.generic import manipulateRoles
+from commands.roles.generic import manipulateRoles
 
 
 @commands.command()

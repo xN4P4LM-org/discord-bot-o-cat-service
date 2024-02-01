@@ -1,24 +1,25 @@
 """
     This is the main file for the bot.
 """
+import logging
+import logging.handlers
 import traceback
 import asyncio
-import sqlite3
 import json
 import os
 import importlib
+
 import discord
 from discord.ext import commands
-
-from json_helpers.read_json import readJson
-from database.crud import loadDatabase
+from database.crud import Database
+from helpers.logs import Logger
 
 
 async def loadCommands(bot):
     """
     Load all commands from the bot folder.
     """
-    directory = "bot"
+    directory = "commands"
     for folder in os.listdir(directory):
         folder_path = os.path.join(directory, folder)
         if os.path.isdir(folder_path):
@@ -40,25 +41,22 @@ def main():
     Main entry point for the bot.
     """
 
-    # Connect to the database
-    conn = sqlite3.connect("database.db")
-
     # Load the database
-    loadDatabase(conn)
+    Database.connect_to_database()
 
     # Load secrets from secrets.json
     with open("secrets.json", encoding="utf-8") as secrets_file:
         secrets = json.load(secrets_file)
 
-    main_roles = readJson("roles/discord/main")
-    optional_roles = readJson("roles/discord/optional")
-    # bot_roles = readJson("roles/bot/bot.json")
+    # Set up the logging configuration
+    Logger.setup_logging(logging.INFO)
 
     # Create a new bot instance
     bot = commands.Bot(
         command_prefix=secrets["prefix"],
         intents=discord.Intents.all(),
         description=secrets["description"],
+        owner_id=secrets["owner_id"],
     )
 
     @bot.event
@@ -69,56 +67,28 @@ def main():
         This event is called when the bot is ready to be used and prints information about the bot.
         """
         if bot.user is not None:
-            print(f"Logged in as {bot.user.name}")
+            logging.info("Logged in as %s", bot.user.name)
 
             # Print the join URL
-            print(
-                f"Invite URL: \
-                https://discord.com/api/oauth2/authorize?client_id={bot.user.id}&permissions=8&scope=bot"
+            logging.info(
+                "Invite URL: \
+                https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot",
+                bot.user.id,
             )
 
         # list all servers the bot is connected to
-        print("Connected to:")
+        logging.info("Bot is connected to the following guilds:")
         for guild in bot.guilds:
-            print(f"- {guild.name}")
-
-    @bot.command()
-    async def shutdown(ctx):
-        """
-        Command: shutdown
-
-        This command is used to shutdown the bot.
-        """
-        if ctx.author.id != secrets["owner_id"]:
-            await ctx.send("You are not allowed to use this command!")
-            return
-        await ctx.send("Shutting down...")
-        await bot.close()
-
-    @bot.command()
-    async def listMainRoles(ctx):
-        """
-        Command: listMainRoles
-
-        This command is used to list all main role catagories.
-        """
-        for role in main_roles:
-            await ctx.send(role)
-
-    @bot.command()
-    async def listOptionalRoles(ctx):
-        """
-        Command: listOptionalRoles
-
-        This command is used to list all optional role catagories.
-        """
-        for role in optional_roles:
-            await ctx.send(role)
+            logging.info("  - %s", guild.name)
 
     asyncio.run(loadCommands(bot))
 
     # Run the bot
-    bot.run(secrets["discord_token"])
+    bot.run(
+        secrets["discord_token"],
+        log_handler=None,
+        reconnect=True,
+    )
 
 
 # Run the main function
