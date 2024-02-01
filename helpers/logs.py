@@ -54,7 +54,7 @@ class Logger:
 
         # Create the formatter
         formatter = logging.Formatter(
-            "[{asctime}] [{levelname:<8}] {name}: {message}", dt_fmt, style="{"
+            "[{asctime}] [{levelname}] - {name}: {message}", dt_fmt, style="{"
         )
 
         # Attach the formatter to the handler
