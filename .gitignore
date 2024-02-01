@@ -12,3 +12,6 @@ __pycache__/
 
 # ignore dev python files
 test.py
+
+# bot logs
+bot.log*
