@@ -1,14 +1,15 @@
 """
 This module contains the shutdown command for the bot.
 """
+
 import logging
 from discord.ext import commands
 
-logger = logging.getLogger("discord.command")
+logger = logging.getLogger("discord.command.admin.shutdown")
 
 
 @commands.command()
-async def shutdown(ctx):
+async def shutdown(ctx: commands.Context):
     """
     Command: shutdown
 
@@ -23,7 +24,7 @@ async def shutdown(ctx):
     await ctx.bot.close()
 
 
-async def setup(bot):
+async def setup(bot: commands.Bot):
     """
     Add the commands to the bot.
     """

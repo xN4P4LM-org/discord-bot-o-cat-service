@@ -5,6 +5,56 @@ This module contains the logging configuration for the discord bot.
 from abc import abstractmethod
 import logging
 import logging.handlers
+import sys
+
+
+class CustomFormatter(logging.Formatter):
+    """
+    This class is used to create a custom logging formatter.
+    """
+
+    grey = "\x1b[38;20m"
+    green = "\x1b[32;20m"
+    blue = "\x1b[34;20m"
+    yellow = "\x1b[33;20m"
+    red = "\x1b[31;20m"
+    bold_red = "\x1b[31;1m"
+    reset = "\x1b[0m"
+    pre_format = "%(asctime)s: "
+    level_format = "%(levelname)s"
+    post_format = " | %(name)s - %(message)s"
+
+    FORMATS = {
+        logging.DEBUG: blue,
+        logging.INFO: green,
+        logging.WARNING: yellow,
+        logging.ERROR: red,
+        logging.CRITICAL: bold_red,
+    }
+
+    def format(self, record: logging.LogRecord):
+        """
+        Initialize the formatter
+        """
+
+        # Set the date format
+        dt_fmt = "%Y-%m-%d %H:%M:%S"
+
+        # Set the log format
+        color_code = self.FORMATS.get(record.levelno, self.reset)
+        log_fmt = (
+            self.pre_format
+            + color_code
+            + self.level_format
+            + self.reset
+            + self.post_format
+        )
+
+        # Create the formatter
+        formatter = logging.Formatter(log_fmt, dt_fmt, style="%")
+
+        # Return the formatted record
+        return formatter.format(record)
 
 
 class Logger:
@@ -28,7 +78,6 @@ class Logger:
         logger = Logger(log_level)
         logger.setup_root_logging()
         logger.setup_discord_logging()
-        logger.setup_command_logging()
         logger.setup_db_logging()
 
     def setup_root_logging(self):
@@ -42,12 +91,15 @@ class Logger:
         root_logger.setLevel(self.log_level)
 
         # Create the rotating file handler
-        handler = logging.handlers.RotatingFileHandler(
+        file_handler = logging.handlers.RotatingFileHandler(
             filename="bot.log",
             encoding="utf-8",
             maxBytes=32 * 1024 * 1024,  # 32 MiB
             backupCount=5,  # Rotate through 5 files
         )
+
+        # Create the console handler
+        console_handler = logging.StreamHandler(sys.stdout)
 
         # set the date format
         dt_fmt = "%Y-%m-%d %H:%M:%S"
@@ -57,11 +109,17 @@ class Logger:
             "[{asctime}] [{levelname}] - {name}: {message}", dt_fmt, style="{"
         )
 
-        # Attach the formatter to the handler
-        handler.setFormatter(formatter)
+        # Attach the formatter to the file_handler
+        file_handler.setFormatter(formatter)
 
-        # Add the handler to the main bot logger
-        root_logger.addHandler(handler)
+        # Attach the formatter to the console_handler
+        console_handler.setFormatter(CustomFormatter())
+
+        # Add the file_handler to the main bot logger
+        root_logger.addHandler(file_handler)
+
+        # Add the console_handler to the main bot logger
+        root_logger.addHandler(console_handler)
 
     def setup_discord_logging(self):
         """
@@ -76,17 +134,6 @@ class Logger:
 
         # Set the log level for the http logger
         logging.getLogger("discord.http").setLevel(logging.INFO)
-
-    def setup_command_logging(self):
-        """
-        Setup the logging configuration for the discord command module
-        """
-
-        # Create the logger for the discord command module
-        command_logger = logging.getLogger("discord.command")
-
-        # Set the log level for the command logger
-        command_logger.setLevel(self.log_level)
 
     def setup_db_logging(self):
         """
