@@ -4,6 +4,10 @@
 # ignore the sqlite database
 *.db
 
+# ignore caches
+.mypy_cache/
+.pytest_cache/
+
 # ignore pycache
 __pycache__/
 
@@ -21,3 +25,4 @@ bot.log*
 
 # allow .devcontainer
 !.devcontainer/*
+!.vscode/*
