@@ -17,4 +17,4 @@ jobs:
           pip install pylint
       - name: Lint with Pylint
         run: |
-          find python -type f -name "*.py" | xargs pylint --rcfile
+          find . ! -path "./.venv/*" -type f -name "*.py"  | xargs pylint --rcfile
