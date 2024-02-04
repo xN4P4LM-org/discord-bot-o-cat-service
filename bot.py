@@ -63,8 +63,8 @@ client_id=%s&permissions=8&scope=bot%s",
         if bot.user is not None:
             startup_logging.info(
                 "%s%s%s is connected to %s%s guilds %s",
-                TerminalColors.GREEN_BOLD, 
-                bot.user.name, 
+                TerminalColors.GREEN_BOLD,
+                bot.user.name,
                 TerminalColors.RESET_COLOR,
                 TerminalColors.GREEN_BOLD,
                 len(bot.guilds),

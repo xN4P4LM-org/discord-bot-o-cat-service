@@ -8,7 +8,7 @@ from discord import Embed, Color
 from commands.roles.generic import getRoleCategory
 
 
-async def postEmojiEmbed(ctx, category_result, roles, channel_id, emoji_type):
+async def postEmojiEmbed(_ctx, category_result, roles, _channel_id, emoji_type):
     """ "
     This function posts a rich embed message with the roles provided
     and adds reactions either with a-z (Letters) or 1-9 (Numbers).

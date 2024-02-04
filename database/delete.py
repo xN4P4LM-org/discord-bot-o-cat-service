@@ -2,9 +2,8 @@
 This file contains the delete operations for the database.
 """
 import logging
-from sqlite3 import OperationalError
 
-from database.connection import getDbConnection
+from database.execute_operation import executeCommand
 from database.validation import stringValidation
 
 logger = logging.getLogger("discord.db.delete")
@@ -24,16 +23,9 @@ def deleteTable(table_name: str) -> bool:
 
     db_command = f"DROP TABLE IF EXISTS {table_name}"
 
-    conn = getDbConnection()
+    db_result = executeCommand(db_command, "commit")
 
-    cursor = conn.cursor()
-    cursor.execute(db_command)
-    try:
-        conn.commit()
-        return True
-    except OperationalError as e:
-        logger.critical(e)
-        return False
-    finally:
-        cursor.close()
-        conn.close()
+    if isinstance(db_result, bool):
+        return db_result
+
+    return False

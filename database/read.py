@@ -2,8 +2,7 @@
 This file contains the read operations for the database.
 """
 import logging
-from sqlite3 import OperationalError
-from database.connection import getDbConnection
+from database.execute_operation import executeCommand
 
 logger = logging.getLogger("discord.db.read")
 
@@ -17,16 +16,10 @@ def readTable(table_name: str) -> list | bool:
 
     db_command = f"SELECT * FROM {table_name}"
 
-    conn = getDbConnection()
+    result = executeCommand(db_command, "fetchall")
 
-    cursor = conn.cursor()
-    cursor.execute(db_command)
-    try:
-        rows = cursor.fetchall()
-        return rows
-    except OperationalError as e:
-        logger.critical(e)
-        return False
-    finally:
-        cursor.close()
-        conn.close()
+    # if the type is not a list, then it is a boolean
+    if isinstance(result, list):
+        return result
+
+    return False

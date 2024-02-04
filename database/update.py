@@ -2,8 +2,7 @@
 This file contains the update operations for the database.
 """
 import logging
-from sqlite3 import OperationalError
-from database.connection import getDbConnection
+from database.execute_operation import executeCommand
 
 logger = logging.getLogger("discord.db.update")
 
@@ -22,18 +21,9 @@ def updateTable(table_name: str, fields: list[str]) -> bool:
     for field in fields:
         db_command += "\n".join(field) + ", "
 
-    db_command = db_command[:-2]
+    db_result = executeCommand(db_command, "commit")
 
-    conn = getDbConnection()
+    if isinstance(db_result, bool):
+        return db_result
 
-    cursor = conn.cursor()
-    cursor.execute(db_command)
-    try:
-        conn.commit()
-        return True
-    except OperationalError as e:
-        logger.critical(e)
-        return False
-    finally:
-        cursor.close()
-        conn.close()
+    return False
