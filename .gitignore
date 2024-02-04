@@ -26,3 +26,6 @@ bot.log*
 # allow .devcontainer
 !.devcontainer/*
 !.vscode/*
+
+# ignore docker compose
+compose.yaml
