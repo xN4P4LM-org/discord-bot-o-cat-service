@@ -1,7 +1,0 @@
-{
-  "python.analysis.typeCheckingMode": "basic",
-  "mypy-type-checker.importStrategy": "fromEnvironment",
-  "python.testing.pytestEnabled": true,
-  "mypy-type-checker.args": ["--namespace-packages"],
-  "python.analysis.logLevel": "Trace"
-}
