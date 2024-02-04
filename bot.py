@@ -3,13 +3,12 @@
 """
 
 import logging
-import json
 import discord
 from discord.ext import commands
-from aiohttp import TraceConfig
 from database.connection import Connection
 from helpers.commands.load_commands import loadCommands
 from helpers.logs import Logger
+from helpers.env import getEnvVar
 
 
 def main():
@@ -17,27 +16,51 @@ def main():
     Main entry point for the bot.
     """
 
-    # Load secrets from secrets.json
-    with open("secrets.json", encoding="utf-8") as secrets_file:
-        secrets = json.load(secrets_file)
+    # get log_level from environment variables
+    log_level = getEnvVar("DISCORD_BOT_LOG_LEVEL")
+
+    if log_level is None:
+        # default to 20 (INFO) if no log level is set
+        log_level = 20
 
     # Set up overall logging
-    Logger.setup_logging(secrets["log_level"])
+    Logger.setup_logging(int(log_level))
 
     # Set up the logger
     startup_logging = logging.getLogger("discord.bot.startup")
 
+    # get command prefix from environment variables
+    command_prefix = getEnvVar("DISCORD_BOT_COMMAND_PREFIX")
+
+    if command_prefix is None:
+        startup_logging.critical("No command prefix found. Exiting...")
+        return
+
+    # get owner id from environment variables
+    owner_id = getEnvVar("DISCORD_BOT_OWNER_ID")
+
+    if owner_id is None:
+        startup_logging.critical("No owner id found. Exiting...")
+        return
+
+    # get description from environment variables
+    description = getEnvVar("DISCORD_BOT_DESCRIPTION")
+
+    if description is None:
+        startup_logging.critical("No description found. Exiting...")
+        return
+
     # Create a new bot instance
     bot = commands.Bot(
-        command_prefix=secrets["prefix"],
+        command_prefix=command_prefix,
         intents=discord.Intents.all(),
-        description=secrets["description"],
-        owner_id=secrets["owner_id"],
+        description=description,
+        owner_id=int(owner_id),
         case_insensitive=True,
     )
 
     # Load the database
-    db_connection = Connection.connect_to_database()
+    Connection.connect_to_database()
 
     @bot.event
     async def on_ready():  # pylint: disable=invalid-name
@@ -66,14 +89,17 @@ def main():
         startup_logging.info("Loading commands...")
         await loadCommands(bot, "commands")
 
+    discord_token = getEnvVar("DISCORD_BOT_TOKEN")
+
+    if discord_token is None:
+        startup_logging.critical("No Discord token found. Exiting...")
+        return
+
     # Run the bot
     bot.run(
-        secrets["discord_token"],
+        discord_token,
         log_handler=None,
     )
-
-    # close the database connection
-    Connection.close_database(db_connection)
 
 
 # Run the main function

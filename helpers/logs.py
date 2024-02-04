@@ -7,7 +7,7 @@ import os
 import logging
 import logging.handlers
 import sys
-
+from helpers.env import getEnvVar
 
 class CustomFormatter(logging.Formatter):
     """
@@ -22,13 +22,19 @@ class CustomFormatter(logging.Formatter):
     bold_red = "\x1b[31;1m"
     reset = "\x1b[0m"
 
-    # get debugging status from variables and cast to a bool
-    debugging_enabled = os.environ.get("DEBUGGING_ENABLED", "False")
+    debugging_enabled = False
 
-    if debugging_enabled == "True":
+    # get debugging status from variables and cast to a bool
+    log_level = getEnvVar("DISCORD_BOT_LOG_LEVEL")
+
+    if log_level is not None:
+        if log_level == 10:
+            debugging_enabled = True
+
+    if debugging_enabled is True:
         pre_format = "%(asctime)s: 	%(funcName)s:%(lineno)d | %(pathname)s	"
 
-    if debugging_enabled == "False":
+    if debugging_enabled is False:
         pre_format = "%(asctime)s: "
 
     level_format = "%(levelname)-8s"
@@ -100,33 +106,11 @@ class Logger:
         # Set the log level for the root logger
         root_logger.setLevel(self.log_level)
 
-        # Create the rotating file handler
-        file_handler = logging.handlers.RotatingFileHandler(
-            filename="bot.log",
-            encoding="utf-8",
-            maxBytes=32 * 1024 * 1024,  # 32 MiB
-            backupCount=5,  # Rotate through 5 files
-        )
-
         # Create the console handler
         console_handler = logging.StreamHandler(sys.stdout)
 
-        # set the date format
-        dt_fmt = "%Y-%m-%d %H:%M:%S"
-
-        # Create the formatter
-        formatter = logging.Formatter(
-            "[{asctime}] [{levelname}] - {name}: {message}", dt_fmt, style="{"
-        )
-
-        # Attach the formatter to the file_handler
-        file_handler.setFormatter(formatter)
-
         # Attach the formatter to the console_handler
         console_handler.setFormatter(CustomFormatter())
-
-        # Add the file_handler to the main bot logger
-        root_logger.addHandler(file_handler)
 
         # Add the console_handler to the main bot logger
         root_logger.addHandler(console_handler)
