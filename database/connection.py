@@ -4,7 +4,6 @@ Class for the database configuration for the bot and all cogs.
 
 import logging
 import sqlite3
-from database.crud import CRUD
 
 
 class Connection:
@@ -12,30 +11,29 @@ class Connection:
     This class contains the database configuration for the bot and all cogs.
     """
 
-    def __init__(self, conn) -> None:
-        self.conn = conn
-        self.crud = CRUD(conn)
-
-        self.logger = logging.getLogger("discord.db")
-
     @staticmethod
-    def connect_to_database():
+    def connect_to_database() -> bool:
         """
         Connect to the sqlite database.
         """
-        conn = sqlite3.connect("database.db")
-        Connection(conn)
+
+        conn = Connection.get_conn()
 
         if conn is not None:
             logging.getLogger("discord.db").info("Connected to the database")
+            Connection.close_database(conn)
+            return True
 
         if conn is None:
             logging.getLogger("discord.db").error("Failed to connect to the database")
+            Connection.close_database(conn)
+            return False
 
-        return conn
+        return False
+
 
     @staticmethod
-    def close_database(conn: sqlite3.Connection):
+    def close_database(conn: sqlite3.Connection) -> None:
         """
         Close the connection to the sqlite database.
         """
@@ -43,8 +41,11 @@ class Connection:
 
         logging.getLogger("discord.db").info("Closed the database connection")
 
-    async def get_conn(self):
+    @staticmethod
+    def get_conn() -> sqlite3.Connection:
         """
-        Return the cursor for the database.
+        Connects and returns a cursor for the database.
         """
-        return self.conn
+        conn = sqlite3.connect("database.db")
+
+        return conn

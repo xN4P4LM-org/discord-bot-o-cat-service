@@ -45,7 +45,12 @@
         "editor.cursorBlinking": "phase",
         "[python]": {
           "editor.rulers": [72, 79]
-        }
+        },
+        "python.analysis.typeCheckingMode": "basic",
+        "mypy-type-checker.importStrategy": "fromEnvironment",
+        "python.testing.pytestEnabled": true,
+        "mypy-type-checker.args": ["--namespace-packages"],
+        "python.analysis.logLevel": "Trace"
       },
       "extensions": [
         // Extensions to install
