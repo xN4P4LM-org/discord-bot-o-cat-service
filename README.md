@@ -13,12 +13,14 @@ This is a general purpose bot that is designed to be customizable and extensible
 There are a few ways to run this bot, but the easiest way is to use Docker Compose.
 
 ### Standalone from source
+
 ```bash
 pip install -r requirements.txt
 python bot.py
 ```
 
 ### Docker Compose from source
+
 ```yaml
 version: "3"
 services:
@@ -28,8 +30,8 @@ services:
       context: .
       dockerfile: dockerfile
     environment:
-      - DISCORD_BOT_DESCRIPTION="A simple discord bot" 
-      - DISCORD_BOT_TOKEN=  # Your bot token with no-quotes
+      - DISCORD_BOT_DESCRIPTION="A simple discord bot"
+      - DISCORD_BOT_TOKEN= # Your bot token with no-quotes
       - DISCORD_BOT_OWNER_ID=
       - DISCORD_BOT_COMMAND_PREFIX=.
       - DISCORD_BOT_LOG_LEVEL=20 # 10=DEBUG, 20=INFO, 30=WARNING, 40=ERROR, 50=CRITICAL
@@ -48,3 +50,16 @@ volumes:
 - `DISCORD_BOT_OWNER_ID` - The Bot Owner's user id
 - `DISCORD_BOT_COMMAND_PREFIX` - Command Prefix Ex. `!`
 - `DISCORD_BOT_LOG_LEVEL` - the int log level `(10, 20, 30, 40, 50)`
+
+# Contributing
+
+Please fork this repository and contribute back using [pull requests](https://github.com/xn4p4lm-org/bot-o-cat/pulls).
+Ensure that when submitting code that you have read the [developer-certificate-of-origin](developer-certificate-of-origin) and that you have signed off on your commits with `git commit -s` or `git commit --signoff`.
+
+Features request can be submitted by using [GitHub Issues](https://github.com/xn4p4lm-org/bot-o-cat/issues).
+
+All code, comments, and critiques are greatly appreciated.
+
+# License
+
+bot-o-cat is licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for the full license text.
