@@ -2,7 +2,7 @@
 FROM python:latest
 
 # Set the working directory inside the container
-WORKDIR /app
+WORKDIR /bot
 
 RUN apt-get update && apt-get install -y \
     python3-pip \
@@ -24,4 +24,4 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Run the bot
-CMD ["python", "bot.py"]
+ENTRYPOINT "/bot/startup.sh"

@@ -2,12 +2,13 @@
 This contains operations to read environment variables and return them to the caller.
 """
 
+import sys
 import os
 import logging
 
 logger = logging.getLogger("discord.env")
 
-def getEnvVar(var_name: str) -> str | None:
+def getEnvVar(var_name: str) -> str:
     """
     Get an environment variable.
 
@@ -20,4 +21,5 @@ def getEnvVar(var_name: str) -> str | None:
     try:
         return os.environ[var_name]
     except KeyError as e:
-        logger.error(e)
+        logger.error("Environment variable %s not found: %s - EXITING", var_name, e)
+        sys.exit(1)

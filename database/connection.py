@@ -10,7 +10,7 @@ def getDbConnection() -> sqlite3.Connection | None:
     """
     Connects and returns a cursor for the database.
     """
-    conn = sqlite3.connect("database.db")
+    conn = sqlite3.connect("db/database.db")
 
     if conn is not None:
         logging.getLogger("discord.db").info("Connected to the database")

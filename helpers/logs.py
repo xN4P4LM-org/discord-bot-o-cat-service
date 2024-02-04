@@ -3,25 +3,16 @@ This module contains the logging configuration for the discord bot.
 """
 
 from abc import abstractmethod
-import os
 import logging
 import logging.handlers
 import sys
 from helpers.env import getEnvVar
+from helpers.terminal_colors import TerminalColors
 
 class CustomFormatter(logging.Formatter):
     """
     This class is used to create a custom logging formatter.
     """
-
-    grey = "\x1b[38;20m"
-    green = "\x1b[32;20m"
-    blue = "\x1b[34;20m"
-    yellow = "\x1b[33;20m"
-    red = "\x1b[31;20m"
-    bold_red = "\x1b[31;1m"
-    reset = "\x1b[0m"
-
     debugging_enabled = False
 
     # get debugging status from variables and cast to a bool
@@ -41,11 +32,11 @@ class CustomFormatter(logging.Formatter):
     post_format = " | %(name)-35s | %(message)s"
 
     FORMATS = {
-        logging.DEBUG: blue,
-        logging.INFO: green,
-        logging.WARNING: yellow,
-        logging.ERROR: red,
-        logging.CRITICAL: bold_red,
+        logging.DEBUG: TerminalColors.BLUE,
+        logging.INFO: TerminalColors.GREEN,
+        logging.WARNING: TerminalColors.YELLOW,
+        logging.ERROR: TerminalColors.RED,
+        logging.CRITICAL: TerminalColors.RED,
     }
 
     def format(self, record: logging.LogRecord):
@@ -57,12 +48,15 @@ class CustomFormatter(logging.Formatter):
         dt_fmt = "%Y-%m-%d %H:%M:%S"
 
         # Set the log format
-        color_code = self.FORMATS.get(record.levelno, self.reset)
+        color_code = self.FORMATS.get(
+            record.levelno,
+            TerminalColors.RESET_COLOR
+        )
         log_fmt = (
             self.pre_format
             + color_code
             + self.level_format
-            + self.reset
+            + TerminalColors.RESET_COLOR
             + self.post_format
         )
 

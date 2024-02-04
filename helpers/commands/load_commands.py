@@ -6,6 +6,7 @@ import os
 import importlib
 import logging
 import traceback
+from helpers.logs import TerminalColors
 
 
 async def iterateCommands(bot, filename, directory, folder) -> None:
@@ -20,9 +21,15 @@ async def iterateCommands(bot, filename, directory, folder) -> None:
             module = importlib.import_module(module_name)
             if hasattr(module, "setup"):
                 await module.setup(bot)
-                logger.info("Loaded module %s", module_name)
+                logger.info("Loaded module %s%s%s",
+                            TerminalColors.GREEN_BOLD,
+                            module_name,
+                            TerminalColors.RESET_COLOR)
         except ModuleNotFoundError:
-            logger.warning("Could not load module %s", module_name)
+            logger.warning("Could not load module %s%s%s",
+                            TerminalColors.RED_BOLD,
+                            module_name,
+                            TerminalColors.RESET_COLOR)
             logger.warning(traceback.format_exc())
 
 
