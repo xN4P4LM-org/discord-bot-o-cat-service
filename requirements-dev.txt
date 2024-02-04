@@ -11,9 +11,6 @@ Cython==0.29.37
 dill==0.3.8
 discord.py==2.3.2
 distro==1.9.0
-docker==7.0.0
-docker-compose==1.29.2
-dockerpty==0.4.1
 docopt==0.6.2
 frozenlist==1.4.1
 idna==3.6
@@ -33,7 +30,6 @@ pyrsistent==0.20.0
 pytest==8.0.0
 pytest-pylint==0.21.0
 python-dotenv==0.21.1
-PyYAML==5.4.1
 requests==2.31.0
 setuptools==69.0.3
 six==1.16.0
