@@ -23,12 +23,12 @@ class CustomFormatter(logging.Formatter):
     reset = "\x1b[0m"
 
     # get debugging status from variables and cast to a bool
-    debugging_enabled = bool(os.environ.get("DEBUGGING_ENABLED", "False"))
+    debugging_enabled = os.environ.get("DEBUGGING_ENABLED", "False")
 
-    if debugging_enabled is True:
+    if debugging_enabled == "True":
         pre_format = "%(asctime)s: 	%(funcName)s:%(lineno)d | %(pathname)s	"
 
-    if debugging_enabled is False:
+    if debugging_enabled == "False":
         pre_format = "%(asctime)s: "
 
     level_format = "%(levelname)-8s"
