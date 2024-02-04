@@ -1,4 +1,4 @@
-name: "lint python"
+name: "Linting"
 on: [push, pull_request]
 jobs:
   run-py-lint:

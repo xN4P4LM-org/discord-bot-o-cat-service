@@ -1,5 +1,7 @@
 # bot-o-cat
 
+[![Linting](https://github.com/xN4P4LM-org/bot-o-cat/actions/workflows/lint.yaml/badge.svg)](https://github.com/xN4P4LM-org/bot-o-cat/actions/workflows/lint.yaml)
+
 ### ( This is a work in progress - use at your own risk )
 
 ## Overview
@@ -45,6 +47,7 @@ volumes:
   discord_cogs:
   discord_db:
   git_ssh:
+  discord_roles:
 ```
 
 ## Required environment variables
