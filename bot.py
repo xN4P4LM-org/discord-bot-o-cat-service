@@ -5,7 +5,7 @@
 import logging
 import discord
 from discord.ext import commands
-from database.connection import Connection
+from database.connection import getDbConnection
 from helpers.commands.load_commands import loadCommands
 from helpers.logs import Logger
 from helpers.env import getEnvVar
@@ -59,8 +59,11 @@ def main():
         case_insensitive=True,
     )
 
-    # Load the database
-    Connection.connect_to_database()
+    # Test the database connection
+    db_conn = getDbConnection()
+
+    if db_conn is not None:
+        db_conn.close()
 
     @bot.event
     async def on_ready():  # pylint: disable=invalid-name
@@ -76,7 +79,7 @@ def main():
             # Print the join URL
             startup_logging.info(
                 "Invite URL: \
-    https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot",
+https://discord.com/api/oauth2/authorize?client_id=%s&permissions=8&scope=bot",
                 bot.user.id,
             )
 
