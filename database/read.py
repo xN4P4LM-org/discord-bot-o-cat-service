@@ -3,7 +3,7 @@ This file contains the read operations for the database.
 """
 import logging
 from sqlite3 import OperationalError
-from database.connection import Connection
+from database.connection import getDbConnection
 
 logger = logging.getLogger("discord.db.read")
 
@@ -17,7 +17,7 @@ def readTable(table_name: str) -> list | bool:
 
     db_command = f"SELECT * FROM {table_name}"
 
-    conn = Connection.get_conn()
+    conn = getDbConnection()
 
     cursor = conn.cursor()
     cursor.execute(db_command)

@@ -3,7 +3,7 @@ This file contains the create operations for the database.
 """
 import logging
 from sqlite3 import OperationalError
-from database.connection import Connection
+from database.connection import getDbConnection
 from database.validation import stringValidation
 
 logger = logging.getLogger("discord.db.create")
@@ -31,7 +31,7 @@ def createTable(table_name: str, fields: list[str]) -> bool:
 
     db_command = db_command[:-2] + ")"
 
-    conn = Connection.get_conn()
+    conn = getDbConnection()
 
     cursor = conn.cursor()
     cursor.execute(db_command)

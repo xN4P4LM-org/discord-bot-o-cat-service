@@ -6,8 +6,8 @@ import logging
 import discord
 from discord.ext import commands
 from database.connection import getDbConnection
-from helpers.commands.load_commands import loadCommands
-from helpers.files.get_file import getFile
+from helpers.load_commands import loadCommands
+from helpers.get_file import getFile
 from helpers.logs import Logger
 from helpers.env import getEnvVar
 from helpers.terminal_colors import TerminalColors

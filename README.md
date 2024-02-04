@@ -35,12 +35,16 @@ services:
       - DISCORD_BOT_OWNER_ID=
       - DISCORD_BOT_COMMAND_PREFIX=.
       - DISCORD_BOT_LOG_LEVEL=20 # 10=DEBUG, 20=INFO, 30=WARNING, 40=ERROR, 50=CRITICAL
-
     volumes:
-      - discord:/app
+      - discord_cogs:/bot/cogs
+      - discord_db:/bot/db
+      - git_ssh:/root/.ssh
+      - discord_roles:/bot/roles
 
 volumes:
-  discord:
+  discord_cogs:
+  discord_db:
+  git_ssh:
 ```
 
 ## Required environment variables
