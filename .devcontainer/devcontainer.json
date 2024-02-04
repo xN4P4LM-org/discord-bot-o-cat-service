@@ -10,18 +10,18 @@
     "ghcr.io/devcontainers/features/docker-in-docker:2": {}, // Setup Docker in Docker support
     "ghcr.io/devcontainers/features/git:1": {}, // Install git
     "ghcr.io/guiyomh/features/vim:0": {}, // Install vim
-    "ghcr.io/meaningful-ooo/devcontainer-features/fish:1": {} // Install fish shell
+    "ghcr.io/meaningful-ooo/devcontainer-features/fish:1": {}, // Install fish shell
+    "ghcr.io/itsmechlark/features/1password:1": {} // Install 1Password
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": [
-    "pip install --upgrade pip",
-    "pip install -r requirements-dev.txt",
-    "pip install pylint pytest pytest-cov"
-  ],
+  //"postCreateCommand": [""],
+
+  // Use 'postStartCommand' to run commands after the container is started.
+  "postStartCommand": "./.devcontainer/post-create.sh",
 
   // Configure tool-specific properties.
   "customizations": {
@@ -66,7 +66,8 @@
         "ms-azuretools.vscode-docker", // Docker support
         "redhat.vscode-yaml", // YAML support
         "ms-vscode-remote.remote-containers", // Remote containers
-        "bmalehorn.vscode-fish" // Fish shell scripting support
+        "bmalehorn.vscode-fish", // Fish shell scripting support
+        "1Password.op-vscode" // 1Password support
       ]
     }
   }
