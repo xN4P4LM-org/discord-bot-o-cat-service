@@ -4,43 +4,7 @@ create, read, update and delete records from the database.
 """
 
 import logging
-import sqlite3
 from sqlite3 import DatabaseError, OperationalError
-
-
-class Database:
-    """
-    This class contains the database configuration for the bot and all cogs.
-    """
-
-    def __init__(self, conn) -> None:
-        self.conn = conn
-        self.crud = CRUD(conn)
-
-        self.logger = logging.getLogger("discord.db")
-
-    @staticmethod
-    def connect_to_database():
-        """
-        Connect to the sqlite database.
-        """
-        conn = sqlite3.connect("database.db")
-        Database(conn)
-
-        return conn
-
-    @staticmethod
-    def close_database(conn):
-        """
-        Close the connection to the sqlite database.
-        """
-        conn.close()
-
-    async def get_conn(self):
-        """
-        Return the cursor for the database.
-        """
-        return self.conn
 
 
 class CRUD:

@@ -18,9 +18,9 @@
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": [
-    "pip3 install --upgrade pip",
-    "pip3 install --user -r requirements.txt",
-    "pip3 install pylint pytest pytest-cov"
+    "pip install --upgrade pip",
+    "pip install -r requirements-dev.txt",
+    "pip install pylint pytest pytest-cov"
   ],
 
   // Configure tool-specific properties.

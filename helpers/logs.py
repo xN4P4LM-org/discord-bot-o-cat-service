@@ -3,6 +3,7 @@ This module contains the logging configuration for the discord bot.
 """
 
 from abc import abstractmethod
+import os
 import logging
 import logging.handlers
 import sys
@@ -20,9 +21,18 @@ class CustomFormatter(logging.Formatter):
     red = "\x1b[31;20m"
     bold_red = "\x1b[31;1m"
     reset = "\x1b[0m"
-    pre_format = "%(asctime)s: "
-    level_format = "%(levelname)s"
-    post_format = " | %(name)s - %(message)s"
+
+    # get debugging status from variables and cast to a bool
+    debugging_enabled = bool(os.environ.get("DEBUGGING_ENABLED", "False"))
+
+    if debugging_enabled is True:
+        pre_format = "%(asctime)s: 	%(funcName)s:%(lineno)d | %(pathname)s	"
+
+    if debugging_enabled is False:
+        pre_format = "%(asctime)s: "
+
+    level_format = "%(levelname)-8s"
+    post_format = " | %(name)-35s | %(message)s"
 
     FORMATS = {
         logging.DEBUG: blue,

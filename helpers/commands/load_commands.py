@@ -7,13 +7,13 @@ import importlib
 import logging
 import traceback
 
-logger = logging.getLogger("discord.command.loader")
-
 
 async def iterateCommands(bot, filename, directory, folder) -> None:
     """
     Load all commands from the bot folder.
     """
+    logger = logging.getLogger("discord.command.loader")
+
     if filename.endswith(".py") and not filename.startswith("__"):
         module_name = f"{directory}.{folder}.{filename[:-3]}"
         try:
