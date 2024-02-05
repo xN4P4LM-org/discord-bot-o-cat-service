@@ -6,7 +6,7 @@
 
 ## Overview
 
-This is a general purpose bot that is designed to be customizable and extensible. It's built on top of the [discord.py](github.com/Rapptz/discord.py) library by [Rapptz](github.com/Rapptz).
+This is a general purpose bot that is designed to be customizable and extensible. It's built on top of the [discord.py](https://github.com/Rapptz/discord.py) library by [Rapptz](https://github.com/Rapptz).
 
 ## Features
 
