@@ -1,4 +1,4 @@
-# bot-o-cat
+# Bot-O-Cat
 
 [![Linting](https://github.com/xN4P4LM-org/bot-o-cat/actions/workflows/lint.yaml/badge.svg)](https://github.com/xN4P4LM-org/bot-o-cat/actions/workflows/lint.yaml)
 
