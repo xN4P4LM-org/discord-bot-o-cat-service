@@ -5,7 +5,7 @@ on the database.
 import logging
 from sqlite3 import OperationalError
 from typing import Any
-from database.connection import getDbConnection
+from connection import getDbConnection
 
 logger = logging.getLogger("discord.db.execute")
 
@@ -25,6 +25,7 @@ def executeCommand(command: str, operations:str) -> bool | list[Any] | Any:
 
     cursor = conn.cursor()
     cursor.execute(command)
+    logger.debug("Executing command: %s", command)
     try:
         if operations == "commit":
             conn.commit()
@@ -37,6 +38,7 @@ def executeCommand(command: str, operations:str) -> bool | list[Any] | Any:
             return result
     except OperationalError as e:
         logger.critical(e)
+        logger.error("Command %s failed", command)
     finally:
         cursor.close()
         conn.close()

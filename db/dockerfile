@@ -1,0 +1,17 @@
+# Use the official MongoDB Docker image as base
+FROM mongo:latest
+
+# Port for MongoDB to run on
+EXPOSE 27017
+
+# Copy certificates to the container
+COPY certs/* /etc/ssl/
+
+# install root certificates
+RUN cp /etc/ssl/ca.pem /usr/local/share/ca-certificates/ca.pem
+
+# Copy the configuration file to the container
+COPY mongod.conf /etc/mongod.conf
+
+# Start MongoDB with custom configuration
+CMD ["mongod", "--config", "/etc/mongod.conf"]

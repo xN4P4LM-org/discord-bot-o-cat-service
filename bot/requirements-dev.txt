@@ -38,3 +38,5 @@ tomlkit==0.12.3
 urllib3==2.2.0
 websocket-client==0.59.0
 yarl==1.9.4
+dnspython==2.5.0 
+pymongo==4.6.1

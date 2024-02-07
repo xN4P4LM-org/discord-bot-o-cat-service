@@ -5,7 +5,7 @@
 import logging
 import discord
 from discord.ext import commands
-from database.connection import getDbConnection
+from helpers.database.connection import getDbConnection
 from helpers.load_commands import loadCommands
 from helpers.get_file import getFile
 from helpers.logs import Logger
@@ -35,6 +35,7 @@ def main():
     # Test the database connection
     db_conn = getDbConnection()
     if db_conn is not None:
+        startup_logging.info("Connected to the database.")
         db_conn.close()
 
     @bot.event

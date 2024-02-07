@@ -14,14 +14,25 @@ __pycache__/
 # ignore python virtual environment
 .venv/
 
-# mac files
-.DS_Store
-
 # ignore dev python files
 test.py
 
 # bot logs
 bot.log*
+
+# ignore database related certs
+*.pem
+*.key
+
+### API and Go related files ###
+
+# ignore go binary
+build/
+
+# ignore cloudflare credentials
+cloudflare.ini
+
+### Docker and Devcontainer ###
 
 # allow .devcontainer
 !.devcontainer/*
@@ -29,3 +40,8 @@ bot.log*
 
 # ignore docker compose
 compose.yaml
+
+### OS generated files ###
+
+# mac files
+.DS_Store

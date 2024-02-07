@@ -2,7 +2,7 @@
 This file contains the update operations for the database.
 """
 import logging
-from database.execute_operation import executeCommand
+from execute_operation import executeCommand
 
 logger = logging.getLogger("discord.db.update")
 

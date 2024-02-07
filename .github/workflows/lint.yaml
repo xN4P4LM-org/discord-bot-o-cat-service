@@ -1,5 +1,10 @@
 name: "Linting"
-on: [push, pull_request]
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+
 jobs:
   run-py-lint:
     runs-on: ubuntu-latest
@@ -20,5 +25,4 @@ jobs:
           pip install -r requirements.txt
           pip install pylint pytest-pylint
       - name: Lint with Pylint
-        run: |
-          find . ! -path "./.venv/*" -type f -name "*.py"  | xargs pylint --rcfile pylintrc
+        run: scripts/lint.sh
