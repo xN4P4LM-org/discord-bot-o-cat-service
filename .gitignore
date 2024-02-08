@@ -18,8 +18,3 @@ cloudflare.ini
 
 # mac files
 .DS_Store
-
-### Ignore submodules ###
-api/
-web/
-bot/
