@@ -15,6 +15,9 @@ BOT_DIR=$(pwd)/bot/certs
 # create a api dir to store the api certificates
 API_DIR=$(pwd)/api/certs
 
+# create a web dir to store the web certificates
+WEB_DIR=$(pwd)/web/certs
+
 # Function to display help message
 display_help() {
     echo "Usage: generate_x509.sh [OPTION]"
@@ -31,6 +34,7 @@ generate_certificates() {
     check_dir $SERVER_DIR
     check_dir $BOT_DIR
     check_dir $API_DIR
+    check_dir $WEB_DIR
 
     # Generate the private key for the x509 CA
     openssl ecparam -name secp384r1 -genkey -out $CERT_DIR/ca.key
@@ -41,26 +45,17 @@ generate_certificates() {
     # Convert CA certificate to PEM format
     openssl x509 -in $CERT_DIR/ca.crt -out $CERT_DIR/ca.pem -days 365 -outform PEM
 
-    # copy the ca cert and key to the server
+    # copy the ca cert and key to the server, bot, api and web directories
     copy $CERT_DIR/ca.pem $SERVER_DIR/ca.pem
-    copy $CERT_DIR/ca.key $SERVER_DIR/ca.key
-    
-    # copy the ca cert and key to the bot
     copy $CERT_DIR/ca.pem $BOT_DIR/ca.pem
-    copy $CERT_DIR/ca.key $BOT_DIR/ca.key
-
-    # copy the ca cert and key to the api
     copy $CERT_DIR/ca.pem $API_DIR/ca.pem
-    copy $CERT_DIR/ca.key $API_DIR/ca.key
+    copy $CERT_DIR/ca.pem $WEB_DIR/ca.pem
 
-    # Generate the client certificate for the server
+    # Generate the client certificate for the server, bot, api and web
     generate_client_certificates mongo-db $SERVER_DIR
-
-    # Generate the client certificate for the bot
     generate_client_certificates bot $BOT_DIR
-
-    # Generate the client certificate for the api
     generate_client_certificates api $API_DIR
+    generate_client_certificates web $WEB_DIR
     
     # delete the $CERT_DIR
     rm -rf $CERT_DIR
@@ -118,27 +113,45 @@ delete_certificates() {
         rm -rf $API_DIR
         echo "api cert directory deleted"
     fi
+
+    if [ -d $WEB_DIR ]; then
+        rm -rf $WEB_DIR
+        echo "web cert directory deleted"
+    fi
     
     # Advise the user that certificates have been deleted
     echo "Certificates have been deleted"
 }
 
 # Check the command line arguments
-case "$1" in
-    help)
-        display_help
-        ;;
-    generate)
-        generate_certificates
-        ;;
-    delete)
-        delete_certificates
-        ;;
-    *)
-        generate_certificates
-        ;;
-esac
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -h|--help)
+            display_help
+            exit 0
+            ;;
+        -g|--generate)
+            generate_certificates
+            exit 0
+            ;;
+        -d|--delete)
+            delete_certificates
+            exit 0
+            ;;
+        *)
+            echo "Invalid option: $1"
+            display_help
+            exit 1
+            ;;
+    esac
+    shift
+done
 
+# If no flag is provided, check if the dirs exists. If they do delete them and generate new certs
+if [ -d $CERT_DIR ] || [ -d $SERVER_DIR ] || [ -d $BOT_DIR ] || [ -d $API_DIR ] || [ -d $WEB_DIR ]; then
+    delete_certificates
+fi
+generate_certificates
 
 
 
