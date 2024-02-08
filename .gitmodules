@@ -1,0 +1,11 @@
+[submodule "bot"]
+	path = bot
+	url = git@github.com:xN4P4LM-org/Bot-O-Cat_bot.git
+
+[submodule "web"]
+	path = web
+	url = git@github.com:xN4P4LM-org/Bot-O-Cat_web.git
+    
+[submodule "api"]
+	path = api
+	url = git@github.com:xN4P4LM-org/Bot-O-Cat_api.git
