@@ -60,7 +60,6 @@
         "GitHub.copilot", // GitHub Copilot extension
         "github.vscode-github-actions", // GitHub Actions
         "eamodio.gitlens", // GitLens
-        "GitHub.vscode-codeql", // CodeQL support
         "ms-python.pylint", // Python linting
         "ms-python.vscode-pylance", // Python language server
         "ms-python.debugpy", // Python debugging extension
