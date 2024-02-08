@@ -11,7 +11,8 @@
     "ghcr.io/devcontainers/features/git:1": {}, // Install git
     "ghcr.io/guiyomh/features/vim:0": {}, // Install vim
     "ghcr.io/meaningful-ooo/devcontainer-features/fish:1": {}, // Install fish shell
-    "ghcr.io/itsmechlark/features/1password:1": {} // Install 1Password
+    "ghcr.io/itsmechlark/features/1password:1": {}, // Install 1Password
+    "ghcr.io/devcontainers/features/go": {} // Install Go
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -59,7 +60,6 @@
         "GitHub.copilot", // GitHub Copilot extension
         "github.vscode-github-actions", // GitHub Actions
         "eamodio.gitlens", // GitLens
-        "GitHub.vscode-codeql", // CodeQL support
         "ms-python.pylint", // Python linting
         "ms-python.vscode-pylance", // Python language server
         "ms-python.debugpy", // Python debugging extension

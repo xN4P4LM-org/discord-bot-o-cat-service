@@ -1,27 +1,23 @@
-# Use the official Python base image
-FROM python:latest
+FROM ubuntu:latest
 
-# Set the working directory inside the container
-WORKDIR /bot
+# update the package list
+RUN apt update
 
-RUN apt-get update && apt-get install -y \
-    python3-pip \
-    python3-dev \
-    build-essential \
-    libssl-dev \
-    libffi-dev \
-    python3-setuptools \
-    python3-venv \
-    python3-pip \
-    gcc
+# install ping and wget
+RUN apt install -y iputils-ping wget
 
-COPY requirements.txt requirements.txt
+# install the mongosh package
+RUN wget -qO- https://www.mongodb.org/static/pgp/server-7.0.asc | tee /etc/apt/trusted.gpg.d/server-7.0.asc
 
-# Install the required dependencies
-RUN pip install -r requirements.txt
+# add the MongoDB repository
+RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-7.0.list
 
-# Copy the bot code to the container
-COPY . .
+# update packages
+RUN apt update
 
-# Run the bot
-ENTRYPOINT "/bot/startup.sh"
+# install the MongoDB package
+RUN apt install -y mongodb-mongosh
+
+# copy certificates for TLS auth
+COPY db/certs/* /etc/ssl/
+

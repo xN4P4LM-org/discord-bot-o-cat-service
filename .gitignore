@@ -1,31 +1,25 @@
-# ignore all json files
-*.json
+# ignore database related certs
+*.pem
+*.key
 
-# ignore the sqlite database
-*.db
+# ignore cloudflare credentials
+cloudflare.ini
 
-# ignore caches
-.mypy_cache/
-.pytest_cache/
-
-# ignore pycache
-__pycache__/
-
-# ignore python virtual environment
-.venv/
-
-# mac files
-.DS_Store
-
-# ignore dev python files
-test.py
-
-# bot logs
-bot.log*
+### Docker and Devcontainer ###
 
 # allow .devcontainer
 !.devcontainer/*
 !.vscode/*
 
 # ignore docker compose
-compose.yaml
+*compose*.yaml
+
+### OS generated files ###
+
+# mac files
+.DS_Store
+
+### Ignore submodules ###
+api/
+web/
+bot/
