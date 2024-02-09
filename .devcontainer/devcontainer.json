@@ -37,7 +37,6 @@
         "git.alwaysSignOff": true,
         "git.enableCommitSigning": true,
         "git.autofetch": true,
-        "git.branchPrefix": "${GITHUB_USER}/",
         "editor.fontSize": 14,
         "editor.fontLigatures": "'ss01', 'ss02', 'ss03', 'ss04', 'ss05', 'ss06', 'ss07', 'ss08', 'calt', 'dlig'",
         "terminal.integrated.fontFamily": "'Monaspace Krypton','CommitMonoV139', 'menlo fallback'",
