@@ -1,0 +1,64 @@
+version: "3"
+services:
+  bot:
+    container_name: discord-bot
+    build: ./bot
+    environment:
+      - DISCORD_BOT_DESCRIPTION="A simple discord bot"
+      - DISCORD_BOT_TOKEN=
+      - DISCORD_BOT_OWNER_ID=
+      - DISCORD_BOT_COMMAND_PREFIX=.
+      - DISCORD_BOT_LOG_LEVEL=20 # 10=DEBUG, 20=INFO, 30=WARNING, 40=ERROR, 50=CRITICAL
+      - DISCORD_MONGO_DB_HOST_NAME=mongo-db # Change this to the name of your mongo-db service, you can use an external mongoDB Service as well
+      - DISCORD_MONGO_DB_PORT=27017
+      - DISCORD_MONGO_DB_DATABASE_NAME=bot-o-cat # Ideally change this to your bot's name
+    volumes:
+      - discord_cogs:/bot/cogs # This is where the bot will store and look for cogs
+      - discord_git_ssh:/root/.ssh # This is where the bot will store and look for ssh keys
+    depends_on:
+      mongo-db:
+        condition: service_healthy # This will make sure that the bot will only start when the mongoDB is up and running
+        restart: true
+
+  mongo-db:
+    container_name: discord-mongodb
+    build: ./db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin # Change this to a more secure username
+      - MONGO_INITDB_ROOT_PASSWORD=pass # Change this to a more secure password
+    volumes:
+      - discord_db:/data/db # This is where the mongoDB will store its data
+    healthcheck:
+      test: mongosh mongo-db:27017/test --tls --tlsCertificateKeyFile /etc/ssl/mongo-db.pem --tlsCAFile /etc/ssl/ca.pem --quiet --eval 'db.runCommand({ping:1})' # This is the healthcheck command, it will check if the mongoDB is up and running
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+  # api: # disabled until API is implemented
+  #   container_name: discord-api
+  #   build: ./api
+  #   environment:
+  #     - API_PORT=8443
+  #   ports:
+  #     - "8443:8443"
+  #   volumes:
+  #     - discord_api_ssl_certs:/etc/letsencrypt/live/api.bot-o-cat.com
+
+  # web: # disabled until Web is implemented
+  #   container_name: discord-web
+  #   build: ./web
+  #   environment:
+  #     - API_PORT=8443
+  #   ports:
+  #     - "8443:8443"
+  #   volumes:
+  #     - discord_web_ssl_certs:/etc/letsencrypt/live/web.bot-o-cat.com
+
+
+volumes:
+  discord_cogs: # Volume for the cogs
+  discord_git_ssh: # Volume for the bot's ssh keys
+  discord_db: # Volume for the mongoDB
+  #discord_api_ssl_certs: # Volume for the SSL certificates for the API
+  #discord_web_ssl_certs: # Volume for the SSL certificates for the Web
