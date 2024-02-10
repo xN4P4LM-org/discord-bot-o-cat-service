@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "type": "docker-build",
+      "label": "docker-build",
+      "platform": "python",
+      "dockerBuild": {
+        "tag": "bot-o-cat:latest",
+        "dockerfile": "${workspaceFolder}/dockerfile",
+        "context": "${workspaceFolder}",
+        "pull": true
+      }
+    }
+  ]
+}

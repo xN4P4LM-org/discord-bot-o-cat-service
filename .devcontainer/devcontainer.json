@@ -12,7 +12,8 @@
     "ghcr.io/guiyomh/features/vim:0": {}, // Install vim
     "ghcr.io/meaningful-ooo/devcontainer-features/fish:1": {}, // Install fish shell
     "ghcr.io/itsmechlark/features/1password:1": {}, // Install 1Password
-    "ghcr.io/devcontainers/features/go": {} // Install Go
+    "ghcr.io/devcontainers/features/go": {}, // Install Go
+    "ghcr.io/devcontainers/features/node:1": {} // Install Node.js
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
