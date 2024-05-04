@@ -1,4 +1,6 @@
-# Bot-O-Cat
+# Discord-bot-o-cat-service (Archived)
+
+This repository is archived as the service is being redesigned and rearchiteded, the repository for the bot can be found at [bot-o-cat](https://github.com/xN4P4LM-org/bot-o-cat). 
 
 [![Linting](https://github.com/xN4P4LM-org/bot-o-cat/actions/workflows/lint.yaml/badge.svg)](https://github.com/xN4P4LM-org/bot-o-cat/actions/workflows/lint.yaml)
 
